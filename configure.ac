@@ -250,6 +250,17 @@ fi
 AM_CONDITIONAL(HAVE_GTK, test "x$HAVE_GTK" = "xyes")
 AM_CONDITIONAL(HAVE_GTK_X11, test "x$HAVE_GTK_X11" = "xyes")
 
+dnl x11 is optional for librfb
+HAVE_X11=NO
+PKG_CHECK_MODULES(X11, x11, HAVE_X11=yes, HAVE_X11=no)
+AC_SUBST(X11_LIBS)
+AC_SUBST(X11_CFLAGS)
+AC_SUBST(HAVE_X11)
+AM_CONDITIONAL(HAVE_X11, test "x$HAVE_X11" = "xyes")
+if test "x$HAVE_X11" = "xyes"; then
+  AC_DEFINE(HAVE_X11, 1, [Define if you have X11 library])
+fi
+
 dnl *** set variables based on configure arguments ***
 
 dnl set license and copyright notice
@@ -331,6 +342,7 @@ AG_GST_CHECK_PLUGIN(audioparsers)
 AG_GST_CHECK_PLUGIN(auparse)
 AG_GST_CHECK_PLUGIN(autodetect)
 AG_GST_CHECK_PLUGIN(avi)
+AG_GST_CHECK_PLUGIN(camerabin2)
 AG_GST_CHECK_PLUGIN(cutter)
 AG_GST_CHECK_PLUGIN(debugutils)
 AG_GST_CHECK_PLUGIN(deinterlace)
@@ -949,6 +961,7 @@ gst/audioparsers/Makefile
 gst/auparse/Makefile
 gst/autodetect/Makefile
 gst/avi/Makefile
+gst/camerabin2/Makefile
 gst/cutter/Makefile
 gst/deinterlace/Makefile
 gst/dtmf/Makefile
@@ -985,6 +998,10 @@ gst/wavenc/Makefile
 gst/wavparse/Makefile
 gst/flx/Makefile
 gst/y4m/Makefile
+gst-libs/Makefile
+gst-libs/gst/Makefile
+gst-libs/gst/interfaces/Makefile
+gst-libs/gst/basecamerabinsrc/Makefile
 ext/Makefile
 ext/aalib/Makefile
 ext/cairo/Makefile
@@ -1018,6 +1035,7 @@ tests/Makefile
 tests/check/Makefile
 tests/examples/Makefile
 tests/examples/audiofx/Makefile
+tests/examples/camerabin2/Makefile
 tests/examples/cairo/Makefile
 tests/examples/equalizer/Makefile
 tests/examples/jack/Makefile
